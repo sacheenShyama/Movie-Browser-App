@@ -1,11 +1,7 @@
 import axios from "axios";
 
-const axiosInstance = axios.create({
-  baseURL: "http://api.themoviedb.org/3/movie",
-  headers: {
-    "Content-Type": "application/json",
-    Accept: "aplication/json",
-  },
+const AxiosInstance = axios.create({
+  baseURL: "http://api.themoviedb.org/3/",
 });
 
-export default axiosInstance;
+export default AxiosInstance;
