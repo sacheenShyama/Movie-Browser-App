@@ -1,12 +1,15 @@
 import { View, Text } from "react-native";
 import React from "react";
-import { useLocalSearchParams } from "expo-router";
+import { Link } from "expo-router";
 
 const Popular = () => {
-  // const {id}=useLocalSearchParams<{id:string}>();
   return (
     <View>
       <Text>Popular</Text>
+      {/* <Link href={"./Liked"}>
+        {" "}
+        <Text>liked</Text>{" "}
+      </Link> */}
     </View>
   );
 };
