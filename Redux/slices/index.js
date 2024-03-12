@@ -1,9 +1,9 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import AxiosInstance from "../../Utils/AxiosInstance";
-
+import { createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
+const MOVIE_KEY = "81858c32cf6c7e2916250b193557952a";
 const initialState = {
   nowPlaying: [],
-  popular: [], 
+  popular: [],
   topRated: [],
   upcoming: [],
   loading: false,
@@ -29,7 +29,7 @@ const movieSlice = createSlice({
       state.loading = true;
     },
     fetchPopularSuccess(state, action) {
-      state.nowPlaying = action.payload;
+      state.popular = action.payload;
       state.loading = false;
     },
     fetchPopularFailure(state, action) {
@@ -40,7 +40,7 @@ const movieSlice = createSlice({
       state.loading = true;
     },
     fetchTopRatedSuccess(state, action) {
-      state.nowPlaying = action.payload;
+      state.topRated = action.payload;
       state.loading = false;
     },
     fetchTopRatedFailure(state, action) {
@@ -51,7 +51,7 @@ const movieSlice = createSlice({
       state.loading = true;
     },
     fetchUpcomingSuccess(state, action) {
-      state.nowPlaying = action.payload;
+      state.upcoming = action.payload;
       state.loading = false;
     },
     fetchUpcomingFailure(state, action) {
@@ -79,11 +79,9 @@ export const {
 export const fetchNowPlaying = () => async (dispatch) => {
   try {
     dispatch(fetchNowPlayingStart());
-    const response = await AxiosInstance.get(`movie/now_playing`, {
-      params: {
-        api_key: process.env.MOVIE_KEY,
-      },
-    });
+    const response = await axios.get(
+      `http://api.themoviedb.org/3/movie/now_playing?api_key=${MOVIE_KEY}&language=en-US`
+    );
     dispatch(fetchNowPlayingSuccess(response.data.results));
   } catch (error) {
     dispatch(fetchNowPlayingFailure(error.message));
@@ -93,11 +91,9 @@ export const fetchNowPlaying = () => async (dispatch) => {
 export const fetchPopular = () => async (dispatch) => {
   try {
     dispatch(fetchPopularStart());
-    const response = await AxiosInstance.get(`movie/popular`, {
-      params: {
-        api_key: process.env.MOVIE_KEY,
-      },
-    });
+    const response = await axios.get(
+      `http://api.themoviedb.org/3/movie/popular?api_key=${MOVIE_KEY}&language=en-US`
+    );
     dispatch(fetchPopularSuccess(response.data.results));
   } catch (error) {
     dispatch(fetchPopularFailure(error.message));
@@ -107,11 +103,9 @@ export const fetchPopular = () => async (dispatch) => {
 export const fetchTopRated = () => async (dispatch) => {
   try {
     dispatch(fetchTopRatedStart());
-    const response = await AxiosInstance.get(`movie/top_rated`, {
-      params: {
-        api_key: process.env.MOVIE_KEY,
-      },
-    });
+    const response = await axios.get(
+      `http://api.themoviedb.org/3/movie/top_rated?api_key=${MOVIE_KEY}&language=en-US`
+    );
     dispatch(fetchTopRatedSuccess(response.data.results));
   } catch (error) {
     dispatch(fetchTopRatedFailure(error.message));
@@ -121,11 +115,9 @@ export const fetchTopRated = () => async (dispatch) => {
 export const fetchUpcoming = () => async (dispatch) => {
   try {
     dispatch(fetchUpcomingStart());
-    const response = await AxiosInstance.get(`movie/upcoming`, {
-      params: {
-        api_key: process.env.MOVIE_KEY,
-      },
-    });
+    const response = await axios.get(
+      `http://api.themoviedb.org/3/movie/upcoming?api_key=${MOVIE_KEY}&language=en-US`
+    );
     dispatch(fetchUpcomingSuccess(response.data.results));
   } catch (error) {
     dispatch(fetchUpcomingFailure(error.message));
