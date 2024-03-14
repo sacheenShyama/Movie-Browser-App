@@ -88,7 +88,7 @@ const Home = () => {
   //   console.log(backgroudnd);
 
   return (
-    <ScrollView style={{ backgroundColor: "#000" }} blurRadius={100}>
+    <ScrollView style={{ backgroundColor: "#000" }}>
       <View style={styles.carouselContentContainer}>
         <View style={{ ...StyleSheet.absoluteFill, backgroundColor: "#000" }}>
           <ImageBackground
