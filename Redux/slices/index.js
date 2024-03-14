@@ -6,6 +6,7 @@ const initialState = {
   popular: [],
   topRated: [],
   upcoming: [],
+  favorites: [],
   loading: false,
   error: null,
 };
@@ -58,6 +59,14 @@ const movieSlice = createSlice({
       state.error = action.payload;
       state.loading = false;
     },
+    addFavorite(state, action) {
+      const { movie } = action.payload;
+      state.favorites.push(movie);
+    },
+    removeFavorite(state, action) {
+      const { id } = action.payload;
+      state.favorites = state.favorites.filter((movie) => movie.id !== id);
+    },
   },
 });
 
@@ -74,6 +83,8 @@ export const {
   fetchUpcomingFailure,
   fetchUpcomingStart,
   fetchUpcomingSuccess,
+  addFavorite,
+  removeFavorite,
 } = movieSlice.actions;
 
 export const fetchNowPlaying = () => async (dispatch) => {
@@ -124,4 +135,12 @@ export const fetchUpcoming = () => async (dispatch) => {
   }
 };
 
+export const addMovieToFavorites = (movie) => (dispatch) => {
+  dispatch(addFavorite({ movie }));
+};
+
+// Action to remove a movie from favorites
+export const removeMovieFromFavorites = (id) => (dispatch) => {
+  dispatch(removeFavorite({ id }));
+};
 export default movieSlice.reducer;

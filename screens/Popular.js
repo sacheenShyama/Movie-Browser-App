@@ -11,20 +11,29 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
+import { useNavigation } from "@react-navigation/native";
+
 import {
   FontAwesome6,
   FontAwesome,
   Feather,
   MaterialIcons,
 } from "@expo/vector-icons";
-import { Link } from "react-router-native";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchPopular } from "../Redux/slices";
+import {
+  fetchPopular,
+  addMovieToFavorites,
+  removeMovieFromFavorites,
+} from "../Redux/slices";
+import Header from "../components/Header";
 const ios = Platform.OS == "ios";
 const Popular = () => {
+  const { navigate } = useNavigation();
+
   const dispatch = useDispatch();
   const { popular, loading, error } = useSelector((state) => state.movie);
   const [page, setPage] = useState(1);
+  // const [favorites, setFavorites] = useState({});
   useEffect(() => {
     dispatch(fetchPopular());
   }, [dispatch]);
@@ -34,9 +43,31 @@ const Popular = () => {
     setState(popular);
   }, [popular]);
 
+  const favorites = useSelector((state) => state.movie.favorites);
+
+  const isFavorite = (movie) => {
+    return favorites.some((favMovie) => favMovie.id === movie.id);
+  };
+
+  // useEffect(() => {
+  //   const initialFavorites = {};
+  //   popular.forEach((item) => {
+  //     initialFavorites[item.id] = false;
+  //   });
+  //   setFavorites(initialFavorites);
+  // }, [popular]);
+
   const handleLoadMore = () => {
     setPage(page + 1);
     setState([...state, ...popular]);
+  };
+
+  const handleFavoritePress = (movie) => {
+    if (isFavorite(movie)) {
+      dispatch(removeMovieFromFavorites(movie.id));
+    } else {
+      dispatch(addMovieToFavorites(movie));
+    }
   };
 
   return (
@@ -44,18 +75,11 @@ const Popular = () => {
       {/* search bar */}
       <SafeAreaView className={ios ? "-mb-2" : "mb-3"}>
         <StatusBar style="light" />
-        <View className="flex-row justify-between items-center mx-4 mt-7">
-          <FontAwesome6 name="bars-staggered" size={30} color="white" />
-          <Text className="text-white text-3xl font-bold">
-            <Text style={{ color: "#eab308" }}>P</Text>opular{" "}
-            <Text style={{ color: "#eab308" }}>M</Text>ovies
-          </Text>
-          <TouchableOpacity>
-            <Link>
-              <FontAwesome name="search" size={22} color="#666" />{" "}
-            </Link>
-          </TouchableOpacity>
-        </View>
+        <Header
+          Title={"Popular"}
+          onPressFavorites={() => navigate("Favorites")}
+          onPressSearch={() => navigate("Search")}
+        />
       </SafeAreaView>
       <View style={styles.container}>
         <FlatList
@@ -71,6 +95,14 @@ const Popular = () => {
                   }}
                   style={{ height: 250, width: 160, borderRadius: 20 }}
                 />
+                <FontAwesome
+                  style={styles.movieIcon}
+                  name="heart"
+                  size={30}
+                  onPress={() => handleFavoritePress(item)}
+                  color={isFavorite(item) ? "#E50914" : "white"}
+                />
+
                 <View style={{ width: 150 }}>
                   <Text style={styles.movieName}>{item.original_title}</Text>
                   <Text style={styles.movieStat}>
@@ -117,6 +149,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
     opacity: 0.8,
     textAlign: "center",
+  },
+  movieIcon: {
+    position: "absolute",
+    left: 130,
+    top: 30,
   },
 });
 export default Popular;

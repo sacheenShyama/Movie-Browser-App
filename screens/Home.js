@@ -8,7 +8,10 @@ import {
   TextInput,
   TouchableOpacity,
   Image,
+  SafeAreaView,
+  Platform,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -20,8 +23,11 @@ import {
 import Fetured from "../components/Fetured";
 import Carousel from "react-native-anchor-carousel";
 import { FontAwesome5, Feather, MaterialIcons } from "@expo/vector-icons";
+import Header from "../components/Header";
+const ios = Platform.OS == "ios";
 
 const Home = () => {
+  const { navigate } = useNavigation();
   const dispatch = useDispatch();
   const { nowPlaying, loading, error } = useSelector((state) => state.movie);
 
@@ -53,7 +59,7 @@ const Home = () => {
     }
   }, [nowPlaying]);
 
-  console.log(state[0]);
+  // console.log(state[0]);
   //   console.log("check::", error, loading);
 
   const { width, height } = Dimensions.get("window");
@@ -88,73 +94,77 @@ const Home = () => {
   //   console.log(backgroudnd);
 
   return (
-    <ScrollView style={{ backgroundColor: "#000" }}>
-      <View style={styles.carouselContentContainer}>
-        <View style={{ ...StyleSheet.absoluteFill, backgroundColor: "#000" }}>
-          <ImageBackground
-            source={{
-              uri: `https://image.tmdb.org/t/p/w500${backgroudnd.image}`,
-            }}
-            style={styles.ImageBg}
-            blurRadius={10}
-          >
-            <View style={styles.SearchboxContainer}>
-              <TextInput
-                placeholder="Search Movies"
-                placeholderTextColor="#666"
-                style={styles.Searchbox}
-              ></TextInput>
-              <Feather
-                name="search"
-                size={22}
-                color="#666"
-                style={styles.SearchboxIcon}
-              />
-            </View>
-            <Text
-              style={{
-                color: "white",
-                fontSize: 24,
-                fontWeight: "bold",
-                marginLeft: 10,
-                marginVertical: 10,
-              }}
+    <View className="flex-1 bg-neutral-800">
+      <SafeAreaView>
+        <ScrollView
+          style={{ backgroundColor: "#000" }}
+          className={ios ? "-mb-2" : "mb-3"}
+        >
+          <View style={styles.carouselContentContainer}>
+            <View
+              style={{ ...StyleSheet.absoluteFill, backgroundColor: "#000" }}
             >
-              Now Top Playing
-            </Text>
-            <View style={styles.carouselContainerView}>
-              <Carousel
-                style={styles.carousel}
-                data={state}
-                renderItem={renderItem}
-                itemWidth={200}
-                containerWidth={width - 20}
-                separatorWidth={0}
-                ref={carouselRef}
-                inActiveOpacity={0.4}
-                //pagingEnable={false}
-                //minScrollDistance={20}
-              />
-            </View>
+              <ImageBackground
+                source={{
+                  uri: `https://image.tmdb.org/t/p/w500${backgroudnd.image}`,
+                }}
+                style={styles.ImageBg}
+                blurRadius={10}
+              >
+                {/* <View style={styles.SearchboxContainer}> */}
+                <Header
+                  Title={"Top Playing"}
+                  // onPress={() => navigate("Favorites")}
+                  onPressFavorites={() => navigate("Favorites")}
+                  onPressSearch={() => navigate("Search")}
+                />
+                {/* </View> */}
+                <Text
+                  style={{
+                    color: "white",
+                    fontSize: 24,
+                    fontWeight: "bold",
+                    marginLeft: 10,
+                    marginVertical: 10,
+                  }}
+                ></Text>
+                <View style={styles.carouselContainerView}>
+                  <Carousel
+                    style={styles.carousel}
+                    data={state}
+                    renderItem={renderItem}
+                    itemWidth={200}
+                    containerWidth={width - 20}
+                    separatorWidth={0}
+                    ref={carouselRef}
+                    inActiveOpacity={0.4}
+                    //pagingEnable={false}
+                    //minScrollDistance={20}
+                  />
+                </View>
 
-            <View style={styles.movieInfoContainer}>
-              <View style={{ justifyContent: "center" }}>
-                <Text style={styles.movieName}>{backgroudnd.name}</Text>
-                <Text style={styles.movieStat}>
-                  {backgroudnd.detail}&nbsp; &nbsp; &nbsp; Rating:
-                  {backgroudnd.rating}
-                </Text>
-              </View>
+                <View style={styles.movieInfoContainer}>
+                  <View style={{ justifyContent: "center" }}>
+                    <Text style={styles.movieName}>{backgroudnd.name}</Text>
+                    <Text style={styles.movieStat}>
+                      {backgroudnd.detail}&nbsp; &nbsp; &nbsp; Rating:
+                      {backgroudnd.rating}
+                    </Text>
+                  </View>
+                </View>
+                <View style={{ paddingHorizontal: 14, marginTop: 14 }}>
+                  <Text
+                    style={{ color: "white", opacity: 0.8, lineHeight: 20 }}
+                  >
+                    {backgroudnd.desc}
+                  </Text>
+                </View>
+              </ImageBackground>
             </View>
-            <View style={{ paddingHorizontal: 14, marginTop: 14 }}>
-              <Text style={{ color: "white", opacity: 0.8, lineHeight: 20 }}>
-                {backgroudnd.desc}
-              </Text>
-            </View>
-          </ImageBackground>
-        </View>
-      </View>
-    </ScrollView>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    </View>
   );
 };
 
