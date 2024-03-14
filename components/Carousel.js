@@ -1,12 +1,12 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 
-const Upcoming = () => {
+const Carousel = () => {
   return (
     <View>
-      <Text>Upcoming</Text>
+      <Text>Carousel</Text>
     </View>
   )
 }
 
-export default Upcoming
+export default Carousel
