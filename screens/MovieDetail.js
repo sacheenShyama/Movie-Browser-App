@@ -61,7 +61,7 @@ const MovieDetail = ({ route }) => {
           Released: {state.release_date} &nbsp;&nbsp;Total vote
           {state.vote_count}
         </Text>
-        <Text style={styles.description} >{state.overview}</Text>
+        <Text style={styles.description}>{state.overview}</Text>
       </View>
     </View>
   );
@@ -94,10 +94,10 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 13,
   },
-  description:{
-    marginTop:20,
-    color:'white',
-    textAlign:'left'
-  }
+  description: {
+    marginTop: 20,
+    color: "white",
+    textAlign: "left",
+  },
 });
 export default MovieDetail;
