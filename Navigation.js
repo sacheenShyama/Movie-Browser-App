@@ -5,7 +5,7 @@ import Popular from "./screens/Popular";
 import TopRated from "./screens/TopRated";
 import Upcoming from "./screens/Upcoming";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-
+import { Ionicons, FontAwesome6, FontAwesome } from "@expo/vector-icons";
 import Favorites from "./screens/Favorites";
 import Search from "./screens/Search";
 import MovieDetail from "./screens/MovieDetail";
@@ -23,33 +23,73 @@ const Navigation = () => {
 
 function TabGroup() {
   return (
-    <Tab.Navigator screenOptions={{ headerShown: false }}>
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+        tabBarStyle: {
+          backgroundColor: '"rgb(38 38 38)"',
+          borderColor: "rgb(38 38 38)",
+        },
+      }}
+    >
       <Tab.Screen
         name="Home"
         component={Home}
         options={{
+          tabBarShowLabel: false,
           headerTitleAlign: "center",
+          tabBarIcon: ({ focused }) => (
+            <Ionicons
+              name={focused ? "home-sharp" : "home-outline"}
+              size={24}
+              color={focused ? "#E50914" : "white"}
+            />
+          ),
         }}
       />
       <Tab.Screen
         name="Popular"
         component={Popular}
         options={{
+          tabBarShowLabel: false,
           headerTitleAlign: "center",
+          tabBarIcon: ({ focused }) => (
+            <FontAwesome6
+              name={focused ? "bars" : "bars-staggered"}
+              size={24}
+              color={focused ? "#E50914" : "white"}
+            />
+          ),
         }}
       />
       <Tab.Screen
         name="TopRated"
         component={TopRated}
         options={{
+          tabBarShowLabel: false,
           headerTitleAlign: "center",
+          tabBarIcon: ({ focused }) => (
+            <FontAwesome
+              name={focused ? "stop-circle" : "stop-circle-o"}
+              size={24}
+              color={focused ? "#E50914" : "white"}
+            />
+          ),
         }}
       />
       <Tab.Screen
         name="Upcoming"
         component={Upcoming}
         options={{
+          tabBarShowLabel: false,
           headerTitleAlign: "center",
+          tabBarIcon: ({ focused }) => (
+            <Ionicons
+              name={"bag-handle"}
+              size={24}
+              color={focused ? "#E50914" : "white"}
+            />
+          ),
         }}
       />
     </Tab.Navigator>
@@ -66,9 +106,27 @@ function MyStack() {
           headerShown: false,
         }}
       />
-      <Stack.Screen name="Search" component={Search} />
-      <Stack.Screen name="MovieDetail" component={MovieDetail} />
-      <Stack.Screen name="Favorites" component={Favorites} />
+      <Stack.Screen
+        options={{
+          headerShown: false,
+        }}
+        name="Search"
+        component={Search}
+      />
+      <Stack.Screen
+        options={{
+          headerShown: false,
+        }}
+        name="MovieDetail"
+        component={MovieDetail}
+      />
+      <Stack.Screen
+        options={{
+          headerShown: false,
+        }}
+        name="Favorites"
+        component={Favorites}
+      />
     </Stack.Navigator>
   );
 }

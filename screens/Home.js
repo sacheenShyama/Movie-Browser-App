@@ -97,7 +97,7 @@ const Home = () => {
     <View className="flex-1 bg-neutral-800">
       <SafeAreaView>
         <ScrollView
-          style={{ backgroundColor: "#000" }}
+        
           className={ios ? "-mb-2" : "mb-3"}
         >
           <View style={styles.carouselContentContainer}>

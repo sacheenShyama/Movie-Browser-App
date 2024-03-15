@@ -27,6 +27,7 @@ import {
 } from "../Redux/slices";
 import Header from "../components/Header";
 const ios = Platform.OS == "ios";
+
 const Popular = () => {
   const { navigate } = useNavigation();
 
@@ -49,13 +50,7 @@ const Popular = () => {
     return favorites.some((favMovie) => favMovie.id === movie.id);
   };
 
-  // useEffect(() => {
-  //   const initialFavorites = {};
-  //   popular.forEach((item) => {
-  //     initialFavorites[item.id] = false;
-  //   });
-  //   setFavorites(initialFavorites);
-  // }, [popular]);
+  
 
   const handleLoadMore = () => {
     setPage(page + 1);
@@ -68,6 +63,7 @@ const Popular = () => {
     } else {
       dispatch(addMovieToFavorites(movie));
     }
+    // console.log("favorites", favorites);
   };
 
   return (
@@ -88,7 +84,7 @@ const Popular = () => {
           numColumns={2}
           renderItem={({ item }) => {
             return (
-              <TouchableOpacity style={styles.listChild}>
+              <TouchableOpacity style={styles.listChild}   onPress={() => navigate("MovieDetail", { state: item })}>
                 <Image
                   source={{
                     uri: `https://image.tmdb.org/t/p/w500${item.poster_path}`,

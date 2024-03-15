@@ -7,6 +7,7 @@ const initialState = {
   topRated: [],
   upcoming: [],
   favorites: [],
+  searchMovie: [],
   loading: false,
   error: null,
 };
@@ -67,6 +68,17 @@ const movieSlice = createSlice({
       const { id } = action.payload;
       state.favorites = state.favorites.filter((movie) => movie.id !== id);
     },
+    fetchsearchMovieStart(state) {
+      state.loading = true;
+    },
+    fetchsearchMovieSuccess(state, action) {
+      state.searchMovie = action.payload;
+      state.loading = false;
+    },
+    fetchsearchMovieFailure(state, action) {
+      state.error = action.payload;
+      state.loading = false;
+    },
   },
 });
 
@@ -85,13 +97,16 @@ export const {
   fetchUpcomingSuccess,
   addFavorite,
   removeFavorite,
+  fetchsearchMovieStart,
+  fetchsearchMovieSuccess,
+  fetchsearchMovieFailure,
 } = movieSlice.actions;
 
 export const fetchNowPlaying = () => async (dispatch) => {
   try {
     dispatch(fetchNowPlayingStart());
     const response = await axios.get(
-      `http://api.themoviedb.org/3/movie/now_playing?api_key=${MOVIE_KEY}&language=en-US`
+      `https://api.themoviedb.org/3/movie/now_playing?api_key=${MOVIE_KEY}&language=en-US`
     );
     dispatch(fetchNowPlayingSuccess(response.data.results));
   } catch (error) {
@@ -103,8 +118,9 @@ export const fetchPopular = () => async (dispatch) => {
   try {
     dispatch(fetchPopularStart());
     const response = await axios.get(
-      `http://api.themoviedb.org/3/movie/popular?api_key=${MOVIE_KEY}&language=en-US`
+      `https://api.themoviedb.org/3/movie/popular?api_key=${MOVIE_KEY}&language=en-US`
     );
+
     dispatch(fetchPopularSuccess(response.data.results));
   } catch (error) {
     dispatch(fetchPopularFailure(error.message));
@@ -115,7 +131,7 @@ export const fetchTopRated = () => async (dispatch) => {
   try {
     dispatch(fetchTopRatedStart());
     const response = await axios.get(
-      `http://api.themoviedb.org/3/movie/top_rated?api_key=${MOVIE_KEY}&language=en-US`
+      `https://api.themoviedb.org/3/movie/top_rated?api_key=${MOVIE_KEY}&language=en-US`
     );
     dispatch(fetchTopRatedSuccess(response.data.results));
   } catch (error) {
@@ -127,7 +143,7 @@ export const fetchUpcoming = () => async (dispatch) => {
   try {
     dispatch(fetchUpcomingStart());
     const response = await axios.get(
-      `http://api.themoviedb.org/3/movie/upcoming?api_key=${MOVIE_KEY}&language=en-US`
+      `https://api.themoviedb.org/3/movie/upcoming?api_key=${MOVIE_KEY}&language=en-US`
     );
     dispatch(fetchUpcomingSuccess(response.data.results));
   } catch (error) {
@@ -135,6 +151,18 @@ export const fetchUpcoming = () => async (dispatch) => {
   }
 };
 
+export const fetchsearchMovie = (query) => async (dispatch) => {
+  try {
+    dispatch(fetchsearchMovieStart());
+    const response = await axios.get(
+      `https://api.themoviedb.org/3/search/movie?api_key=${MOVIE_KEY}&query=${query}&language=en-US`
+    );
+    // console.log("index serarch", response.data.results);
+    dispatch(fetchsearchMovieSuccess(response.data.results));
+  } catch (error) {
+    dispatch(fetchsearchMovieFailure(error.message));
+  }
+};
 export const addMovieToFavorites = (movie) => (dispatch) => {
   dispatch(addFavorite({ movie }));
 };
