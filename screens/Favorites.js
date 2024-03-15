@@ -71,7 +71,10 @@ const Favorites = () => {
           renderItem={({ item, index }) => {
             // console.log("item in search:::", item);
             return (
-              <TouchableOpacity style={styles.listChild}   onPress={() => navigate("MovieDetail", { state: item })}>
+              <TouchableOpacity
+                style={styles.listChild}
+                onPress={() => navigate("MovieDetail", { state: item })}
+              >
                 <Image
                   source={{
                     uri: `https://image.tmdb.org/t/p/w500${item.poster_path}`,
@@ -134,6 +137,13 @@ const styles = StyleSheet.create({
     position: "absolute",
     left: 130,
     top: 30,
+  },
+  backbutton: {
+    position: "absolute",
+    top: 30,
+    left: 10,
+    color: "#E50914",
+    zIndex: 999,
   },
 });
 export default Favorites;

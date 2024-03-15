@@ -82,12 +82,12 @@ const Home = () => {
           style={styles.carouselImage}
         />
         <Text style={styles.carouselText}>{item.original_title}</Text>
-        <MaterialIcons
+        {/* <MaterialIcons
           name="library-add"
           size={30}
           color="white"
           style={styles.carouselIcon}
-        />
+        /> */}
       </TouchableOpacity>
     );
   };
@@ -96,10 +96,7 @@ const Home = () => {
   return (
     <View className="flex-1 bg-neutral-800">
       <SafeAreaView>
-        <ScrollView
-        
-          className={ios ? "-mb-2" : "mb-3"}
-        >
+        <ScrollView className={ios ? "-mb-2" : "mb-3"}>
           <View style={styles.carouselContentContainer}>
             <View
               style={{ ...StyleSheet.absoluteFill, backgroundColor: "#000" }}

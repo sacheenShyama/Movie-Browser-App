@@ -30,10 +30,36 @@ import { LinearGradient } from "expo-linear-gradient";
 
 const ios = Platform.OS == "ios";
 
+const genreMap = {
+  28: " Action ",
+  12: " Adventure ",
+  16: " Animation ",
+  35: " Comedy ",
+  80: " Crime ",
+  99: " Documentary ",
+  18: " Drama ",
+  10751: " Family ",
+  14: " Fantasy ",
+  36: " History ",
+  27: " Horror ",
+  10402: " Music ",
+  9648: " Mystery ",
+  10749: " Romance ",
+  878: " Science Fiction ",
+  10770: " TV Movie ",
+  53: " Thriller ",
+  10752: " War ",
+  37: " Western ",
+};
 const MovieDetail = ({ route }) => {
   const navigation = useNavigation();
   const { state } = route.params;
-  console.log("state detail", state);
+
+  const genres = state.genre_ids
+    .map((genreId) => genreMap[genreId])
+    .filter(Boolean);
+
+  // console.log("state detail", state);
   return (
     <View style={styles.container}>
       {/* Container view for ImageBackground */}
@@ -46,6 +72,15 @@ const MovieDetail = ({ route }) => {
           style={styles.imageBackground}
           resizeMode="cover"
         >
+          <TouchableOpacity
+            onPress={() => {
+              navigation.goBack();
+              // console.log("go back clicked");
+            }}
+            style={styles.backbutton}
+          >
+            <FontAwesome name="arrow-left" size={30} color="#E50914" />
+          </TouchableOpacity>
           {/* Faded gradient */}
           <LinearGradient
             colors={["transparent", "rgba(0,0,0,0.9)"]} // Define your gradient colors here
@@ -58,9 +93,10 @@ const MovieDetail = ({ route }) => {
       </View>
       <View style={{ height: "40%" }}>
         <Text style={styles.date}>
-          Released: {state.release_date} &nbsp;&nbsp;Total vote
+          Released: {state.release_date} &nbsp;&nbsp;Total vote: &nbsp;
           {state.vote_count}
         </Text>
+        <Text style={styles.genre}>{genres}</Text>
         <Text style={styles.description}>{state.overview}</Text>
       </View>
     </View>
@@ -72,7 +108,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#000",
   },
   imageContainer: {
-    height: "60%",
+    height: "70%",
   },
   imageBackground: {
     flex: 1,
@@ -83,7 +119,7 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   movieTitle: {
-    color: "#FFF",
+    color: "#E50914",
     fontSize: 30,
     fontWeight: "bold",
     textAlign: "center",
@@ -96,8 +132,21 @@ const styles = StyleSheet.create({
   },
   description: {
     marginTop: 20,
-    color: "white",
+    color: "#666",
     textAlign: "left",
+    fontSize: 16,
+  },
+  genre: {
+    fontSize: 13,
+    color: "#666",
+    textAlign: "center",
+  },
+  backbutton: {
+    position: "absolute",
+    top: 30,
+    left: 10,
+    color: "#E50914",
+    zIndex: 999,
   },
 });
 export default MovieDetail;
