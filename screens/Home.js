@@ -48,15 +48,15 @@ const Home = () => {
   });
   useEffect(() => {
     setState(nowPlaying);
-    if (nowPlaying.length > 0) {
-      setBackground({
-        image: state[0]?.poster_path || state[0]?.backdrop_path,
-        name: state[0]?.original_title,
-        detail: state[0]?.release_date,
-        desc: state[0]?.overview,
-        rating: state[0]?.vote_average,
-      });
-    }
+    // if (nowPlaying.length > 0) {
+    setBackground({
+      image: state[0]?.poster_path || state[0]?.backdrop_path,
+      name: state[0]?.original_title,
+      detail: state[0]?.release_date,
+      desc: state[0]?.overview,
+      rating: state[0]?.vote_average,
+    });
+    // }
   }, [nowPlaying]);
 
   // console.log(state[0]);

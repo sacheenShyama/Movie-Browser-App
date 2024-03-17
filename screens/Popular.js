@@ -13,12 +13,7 @@ import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { useNavigation } from "@react-navigation/native";
 
-import {
-  FontAwesome6,
-  FontAwesome,
-  Feather,
-  MaterialIcons,
-} from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchPopular,
@@ -34,6 +29,8 @@ const Popular = () => {
   const dispatch = useDispatch();
   const { popular, loading, error } = useSelector((state) => state.movie);
   const [page, setPage] = useState(1);
+  const [showError, setShowError] = useState(null);
+
   // const [favorites, setFavorites] = useState({});
   useEffect(() => {
     dispatch(fetchPopular());
@@ -42,6 +39,7 @@ const Popular = () => {
   const [state, setState] = useState(popular);
   useEffect(() => {
     setState(popular);
+    setShowError(error);
   }, [popular]);
 
   const favorites = useSelector((state) => state.movie.favorites);
@@ -49,8 +47,6 @@ const Popular = () => {
   const isFavorite = (movie) => {
     return favorites.some((favMovie) => favMovie.id === movie.id);
   };
-
-  
 
   const handleLoadMore = () => {
     setPage(page + 1);
@@ -77,6 +73,7 @@ const Popular = () => {
           onPressSearch={() => navigate("Search")}
         />
       </SafeAreaView>
+      {showError && <Text style={{ color: "red" }}>{showError}</Text>}
       <View style={styles.container}>
         <FlatList
           style={styles.flatlistStyle}
@@ -84,7 +81,10 @@ const Popular = () => {
           numColumns={2}
           renderItem={({ item }) => {
             return (
-              <TouchableOpacity style={styles.listChild}   onPress={() => navigate("MovieDetail", { state: item })}>
+              <TouchableOpacity
+                style={styles.listChild}
+                onPress={() => navigate("MovieDetail", { state: item })}
+              >
                 <Image
                   source={{
                     uri: `https://image.tmdb.org/t/p/w500${item.poster_path}`,

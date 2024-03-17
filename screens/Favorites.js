@@ -28,6 +28,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 const ios = Platform.OS == "ios";
 const Favorites = () => {
+  const { navigate } = useNavigation();
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
